@@ -51,7 +51,7 @@ const AnimeInfo: React.FC<{ anime: Anime }> = ({ anime }) => {
                     transition={{ duration: 0.6, ease: 'easeOut' }}
                 />
 
-                {/* Detail */}
+                {/* Detail anime */}
                 <div className="flex flex-col flex-grow space-y-6">
                     {/* Title */}
                     <motion.h2
