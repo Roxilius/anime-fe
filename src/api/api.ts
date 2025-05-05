@@ -42,6 +42,26 @@ export const getTopAiring = async () => {
     return [];
   }
 };
+export const getSpotLight = async () => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/spotlight`, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Failed to fetch recent episodes:", error);
+    return [];
+  }
+};
 
 export const searchAnime = async (query: string, page: number) => {
   try {
