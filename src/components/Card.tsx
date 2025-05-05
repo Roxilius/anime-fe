@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { JSX } from "react";
 import { Languages, Volume2, BadgeAlert, Film, Tv, Star } from "lucide-react";
 import { motion } from "framer-motion";
@@ -16,7 +17,7 @@ interface CardProps {
   episodes: number;
 }
 
-const Card: React.FC<CardProps> = ({
+const Card: React.FC<CardProps | any> = ({
   id,
   title,
   image,

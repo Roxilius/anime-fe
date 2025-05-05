@@ -189,14 +189,14 @@ const HomePage = () => {
           {/* Sidebar */}
           <div className={`w-full xl:w-4/12 flex flex-col gap-8 ${selectedGenre ? 'flex-col-reverse' : 'flex-col'}`}>
             {/* Top Airing */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
               <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Top Airing Anime</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 place-items-center gap-4">
-                {Array.isArray(topAiring?.results) && topAiring?.results.map((anime: any, index: number) => (
+                {topAiring?.results.slice(0, 10).map((anime: any, index: number) => (
                   <motion.div
                     key={index}
                     variants={{
@@ -211,7 +211,7 @@ const HomePage = () => {
                   </motion.div>
                 ))}
               </div>
-            </motion.div>
+            </motion.div> */}
 
 
             {/* Genre List */}
