@@ -196,7 +196,7 @@ const HomePage = () => {
             >
               <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Top Airing Anime</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 place-items-center gap-4">
-                {topAiring?.results?.map((anime: any, index: number) => (
+                {topAiring?.results.slice(0, 10).map((anime: any, index: number) => (
                   <motion.div
                     key={index}
                     variants={{
