@@ -209,7 +209,7 @@ const HomePage = () => {
                   >
                     <Card {...anime} />
                   </motion.div>
-                )).slice(0, 10)}
+                ))}
               </div>
             </motion.div>
 
