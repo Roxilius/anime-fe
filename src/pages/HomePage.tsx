@@ -5,14 +5,16 @@ import {
   getAnimeByGenre,
   getGenreList,
   getRecentEpisodes,
+  getSpotLight,
   getTopAiring,
   searchAnime,
 } from "../api/api";
-import { TypeRecentEpisodes } from "../types/types";
+import { SpotLight, TypeRecentEpisodes } from "../types/types";
 import Card from "../components/Card";
 import Pagination from "../components/Pagination";
 import GenreList from "../components/GenreList";
 import { motion } from "framer-motion";
+import Spotlight from "../components/Spotlight";
 
 type HomeProps = {
   searchKeyword: string;
@@ -28,22 +30,27 @@ const HomePage = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [genreList, setGenreList] = useState<string[]>([]);
+  const [spotLight, setSpotLight] = useState<SpotLight[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const dataSpotLight = await getSpotLight();
         if (searchKeyword) {
           const data = await searchAnime(searchKeyword, page);
           setAnimeData(data);
           setTotalPages(data.totalPages);
+          setSpotLight([]);
         } else if (selectedGenre) {
           const data = await getAnimeByGenre(selectedGenre, page);
           setAnimeData(data);
           setTotalPages(data.totalPages);
+          setSpotLight([]);
         } else {
           const dataRecent = await getRecentEpisodes(page);
           setAnimeData(dataRecent);
           setTotalPages(Math.ceil(dataRecent.totalPages));
+          setSpotLight(dataSpotLight.results);
         }
 
         const dataTopAiring = await getTopAiring();
@@ -101,7 +108,11 @@ const HomePage = () => {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 py-8"
     >
-      <div className="max-w-screen-xl mx-auto flex flex-col gap-10">
+      {/* spot light */}
+      {spotLight && (
+        <Spotlight data={spotLight}/>
+      )}
+      <div className="max-w-screen-xl mx-auto flex flex-col gap-10 text-center">
         {/* Title */}
         <motion.h2
           className="text-xl sm:text-2xl font-bold text-center"
@@ -122,7 +133,7 @@ const HomePage = () => {
           <div className="w-full xl:w-8/12">
             <motion.div
               key={`${page}-${selectedGenre}-${searchKeyword}`}
-              className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 place-items-center"
+              className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-4 place-items-center"
               initial="hidden"
               animate="visible"
               variants={{
@@ -196,7 +207,7 @@ const HomePage = () => {
             >
               <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Top Airing Anime</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 place-items-center gap-4">
-                {topAiring?.results.slice(0, 10).map((anime: any, index: number) => (
+                {Array.isArray(topAiring?.results) && topAiring?.results.slice(0, 10).map((anime: any, index: number) => (
                   <motion.div
                     key={index}
                     variants={{

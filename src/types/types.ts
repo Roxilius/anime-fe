@@ -14,6 +14,23 @@ export type TypeScheduleAnime = {
   airingTime: string;
 };
 
+export type SpotLight = {
+  id: string
+  title: string
+  japaneseTitle: string
+  banner: string
+  rank: number
+  url: string
+  type: string
+  duration: string
+  releaseDate: string
+  quality: string
+  sub: number
+  dub: number
+  episodes: number
+  description: string
+}
+
 export type Anime = {
   id: string;
   title: string;

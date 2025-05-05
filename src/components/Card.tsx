@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { JSX } from "react";
 import { Languages, Volume2, BadgeAlert, Film, Tv, Star } from "lucide-react";
 import { motion } from "framer-motion";
@@ -17,7 +16,7 @@ interface CardProps {
   episodes: number;
 }
 
-const Card: React.FC<CardProps | any> = ({
+const Card: React.FC<CardProps> = ({
   id,
   title,
   image,
@@ -46,7 +45,7 @@ const Card: React.FC<CardProps | any> = ({
       transition={{ duration: 0.4 }}
       onClick={() => navigate(`/${id}`)}
     >
-      <div className="relative w-full h-[200px] sm:h-[250px] md:h-[300px] overflow-hidden">
+      <div className="relative w-full h-[200px] sm:h-[150px] md:h-[200px] overflow-hidden">
         <img
           src={image}
           alt={title}
@@ -78,7 +77,7 @@ const Card: React.FC<CardProps | any> = ({
       </div>
 
       <figcaption className="space-y-1 px-2 pt-2 pb-3">
-        <h3 className="truncate text-sm font-semibold">{title}</h3>
+        <h3 className="text-sm font-semibold line-clamp-2">{title}</h3>
         <p className="flex items-center gap-1 text-xs text-gray-400">
           {typeIcons[type] ?? null}
           {type} • {duration}
