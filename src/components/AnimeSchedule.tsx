@@ -64,9 +64,9 @@ const AnimeSchedule: React.FC = () => {
   useEffect(() => {
     const fetchSchedule = async () => {
       const result = await scheduleAnime(selectedDate);
-
+      
       if (result?.results) {
-        const formattedData: TypeScheduleAnime[] = result.results.map((item: any) => ({
+        const formattedData: TypeScheduleAnime[] = result.results.map((item: { id: any; title: any; airingEpisode: any; airingTime: any; url: any; }) => ({
           id: item.id,
           title: item.title,
           airingEpisode: item.airingEpisode,
