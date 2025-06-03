@@ -11,6 +11,9 @@ dependencies:
   framer-motion:
     specifier: ^12.9.4
     version: 12.9.4(react-dom@19.1.0)(react@19.1.0)
+  hls.js:
+    specifier: ^1.6.5
+    version: 1.6.5
   lucide-react:
     specifier: ^0.507.0
     version: 0.507.0(react@19.1.0)
@@ -1718,6 +1721,10 @@ packages:
     dependencies:
       function-bind: 1.1.2
     dev: true
+
+  /hls.js@1.6.5:
+    resolution: {integrity: sha512-KMn5n7JBK+olC342740hDPHnGWfE8FiHtGMOdJPfUjRdARTWj9OB+8c13fnsf9sk1VtpuU2fKSgUjHvg4rNbzQ==}
+    dev: false
 
   /http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
