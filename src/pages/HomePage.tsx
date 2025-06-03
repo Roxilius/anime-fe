@@ -121,24 +121,23 @@ const HomePage = () => {
               <Spotlight data={spotLight} />
             )}
             <div className="max-w-screen-xl mx-auto flex flex-col gap-10 text-center">
-              {/* Title */}
-              <motion.h2
-                className="text-xl sm:text-2xl font-bold text-center"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.4 }}
-              >
-                {searchKeyword
-                  ? `Search Results for "${searchKeyword}"`
-                  : selectedGenre
-                    ? `Anime for Genre ${selectedGenre}`
-                    : "Recent Episodes"}
-              </motion.h2>
-
               {/* Content Grid */}
               <div className="flex flex-col xl:flex-row gap-10">
                 {/* Main Content */}
                 <div className="w-full xl:w-8/12">
+                  {/* Title */}
+                  <motion.h2
+                    className="text-xl sm:text-2xl font-bold text-center m-5"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.4 }}
+                  >
+                    {searchKeyword
+                      ? `Search Results for ${searchKeyword}`
+                      : selectedGenre
+                        ? `Anime for Genre ${selectedGenre}`
+                        : "Recent Episodes"}
+                  </motion.h2>
                   <motion.div
                     key={`${page}-${selectedGenre}-${searchKeyword}`}
                     className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-4 place-items-center"
@@ -206,14 +205,20 @@ const HomePage = () => {
                 </div>
 
                 {/* Sidebar */}
-                <div className={`w-full xl:w-4/12 flex flex-col gap-8 ${selectedGenre ? 'flex-col-reverse' : 'flex-col'}`}>
+                <div className={`w-full xl:w-4/12 flex flex-col gap-10 ${selectedGenre ? 'flex-col-reverse' : 'flex-col'}`}>
                   {/* Top Airing */}
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Top Airing Anime</h2>
+                    <motion.h2
+                      className="text-xl sm:text-2xl font-bold text-center m-5"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.2, duration: 0.4 }}
+                    >Top Airing Anime
+                    </motion.h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 place-items-center gap-4">
                       {Array.isArray(topAiring?.results) && topAiring?.results.slice(0, 10).map((anime: any, index: number) => (
                         <motion.div
