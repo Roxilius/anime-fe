@@ -121,8 +121,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ data }) => {
               </motion.p>
 
               <motion.a
-                href={spotlightItem.url}
-                target="_blank"
+                href={`/${spotlightItem.id}`}
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 mt-4 bg-orange-600 hover:bg-orange-700 transition px-4 py-2 rounded font-semibold w-max shadow-lg"
                 initial={{ opacity: 0, y: 20 }}
