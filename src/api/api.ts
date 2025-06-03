@@ -93,7 +93,7 @@ export const scheduleAnime = async (date: string) => {
       `${import.meta.env.VITE_API_URL}/schedule/${date}`,
       {
         headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+          // "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
           "Content-Type": "application/json",
         },
       }

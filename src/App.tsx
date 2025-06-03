@@ -9,10 +9,9 @@ function App() {
     setSearchKeyword(keyword);
     setSelectedGenre("");
   };
-
   return (
     <>
-      <Header onSearch={handleSearch} searchKeyword={searchKeyword}/>
+      <Header onSearch={handleSearch} searchKeyword={searchKeyword} />
       <Outlet context={{ searchKeyword, setSearchKeyword, selectedGenre, setSelectedGenre }} />
     </>
   );

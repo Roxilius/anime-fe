@@ -63,7 +63,6 @@ const AnimeSchedule: React.FC = () => {
 
   useEffect(() => {
     const fetchSchedule = async () => {
-      alert(selectedDate);
       const result = await scheduleAnime(selectedDate);
 
       if (result?.results) {
