@@ -19,7 +19,7 @@ COPY . .
 RUN pnpm run build
 
 # ---------- Production Stage ----------
-FROM nginx:stable-alpine3.21
+FROM nginx:stable-alpine
 
 # Hapus default config
 RUN rm /etc/nginx/conf.d/default.conf
