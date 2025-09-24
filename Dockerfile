@@ -21,6 +21,8 @@ RUN pnpm run build
 # ---------- Production Stage ----------
 FROM nginx:stable-alpine
 
+RUN apk update && apk upgrade --no-cache
+
 # Hapus default config
 RUN rm /etc/nginx/conf.d/default.conf
 
