@@ -11,7 +11,7 @@ before_script:
   - echo "🚀 Start CI/CD pipeline"
 
 # =====================
-# Build Stage
+# Build App (opsional kalau masih ada proses build FE)
 # =====================
 build_app:
   stage: build
@@ -29,9 +29,11 @@ build_app:
 # =====================
 trivy_fs_scan:
   stage: scan
-  image: aquasec/trivy:latest
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
   script:
-    # Scan seluruh file system source code (dependency, config, secret, dsb)
+    # Scan source code
     - trivy fs --exit-code 1 --severity HIGH,CRITICAL .
 
 # =====================
@@ -46,13 +48,21 @@ docker_build:
     - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
     - docker build -t $IMAGE_NAME:latest .
     - docker push $IMAGE_NAME:latest
+  artifacts:
+    name: "docker-image"
+    expire_in: 1h
+    paths:
+      - .
 
 # =====================
 # Trivy Docker Image Scan
 # =====================
 trivy_image_scan:
   stage: scan
-  image: aquasec/trivy:latest
+  needs: ["docker_build"]   # pastikan jalan setelah docker_build
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
   script:
     # Scan image yang baru dibuild
     - trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_NAME:latest
