@@ -33,7 +33,6 @@ trivy_fs_scan:
     name: aquasec/trivy:latest
     entrypoint: [""]
   script:
-    # Scan seluruh file system source code (dependency, config, secret, dsb)
     - trivy fs --exit-code 1 --severity HIGH,CRITICAL .
 
 # =====================
@@ -53,11 +52,10 @@ docker_build:
 # Trivy Docker Image Scan
 # =====================
 trivy_image_scan:
-  stage: scan
-  needs: ["docker_build"]   # pastikan jalan setelah docker_build
+  stage: docker
+  needs: ["docker_build"]   # sekarang valid, karena sama-sama di stage docker
   image:
     name: aquasec/trivy:latest
     entrypoint: [""]
   script:
-    # Scan image yang baru dibuild
     - trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_NAME:latest
