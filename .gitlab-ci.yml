@@ -1,8 +1,6 @@
 stages:
-  - build
-  - scan
   - docker_build
-  - image_scan
+  - scan
   - docker_push
 
 variables:
@@ -11,25 +9,6 @@ variables:
 
 before_script:
   - echo "🚀 Start CI/CD pipeline"
-
-build_app:
-  stage: build
-  image: node:20-alpine
-  script:
-    - corepack enable && corepack prepare pnpm@latest --activate
-    - pnpm install --frozen-lockfile || pnpm install --force
-    - pnpm run build
-  artifacts:
-    paths:
-      - dist
-
-trivy_fs_scan:
-  stage: scan
-  image:
-    name: aquasec/trivy:latest
-    entrypoint: [""]
-  script:
-    - trivy fs --exit-code 1 --severity HIGH,CRITICAL .
 
 docker_build:
   stage: docker_build
@@ -44,8 +23,16 @@ docker_build:
       - docker-image.tar
     expire_in: 1h
 
+trivy_fs_scan:
+  stage: scan
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
+  script:
+    - trivy fs --exit-code 1 --severity HIGH,CRITICAL .
+
 trivy_image_scan:
-  stage: image_scan
+  stage: scan
   needs:
     - job: docker_build
       artifacts: true
@@ -63,8 +50,6 @@ trivy_image_scan:
 docker_push:
   stage: docker_push
   needs:
-    - job: trivy_image_scan
-      artifacts: true
     - job: docker_build
       artifacts: true
   image: docker:24.0.5
@@ -72,6 +57,5 @@ docker_push:
     - docker:dind
   script:
     - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-    - ls -lh
     - docker load -i docker-image.tar
     - docker push $IMAGE_NAME:latest
