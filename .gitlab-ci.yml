@@ -60,7 +60,9 @@ trivy_image_scan:
 
 docker_push:
   stage: docker_push
-  needs: ["trivy_image_scan"]
+  needs:
+    - job: trivy_image_scan
+      artifacts: true
   image: docker:24.0.5
   services:
     - docker:dind
