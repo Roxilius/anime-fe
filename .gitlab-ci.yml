@@ -2,6 +2,7 @@ stages:
   - build
   - scan
   - docker
+  - image_scan
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -36,15 +37,14 @@ docker_build:
     - docker:dind
   script:
     - docker build --pull --no-cache -t $IMAGE_NAME:latest .
+    - docker save -o docker-image.tar $IMAGE_NAME:latest
   artifacts:
     paths:
       - docker-image.tar
     expire_in: 1h
-  after_script:
-    - docker save -o docker-image.tar $IMAGE_NAME:latest
 
 trivy_image_scan:
-  stage: scan
+  stage: image_scan
   needs: ["docker_build"]
   image:
     name: aquasec/trivy:latest
