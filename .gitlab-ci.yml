@@ -46,7 +46,9 @@ docker_build:
 
 trivy_image_scan:
   stage: image_scan
-  needs: ["docker_build"]
+  needs:
+    - job: docker_build
+      artifacts: true
   image: docker:24.0.5
   services:
     - docker:dind
@@ -63,10 +65,13 @@ docker_push:
   needs:
     - job: trivy_image_scan
       artifacts: true
+    - job: docker_build
+      artifacts: true
   image: docker:24.0.5
   services:
     - docker:dind
   script:
     - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+    - ls -lh
     - docker load -i docker-image.tar
     - docker push $IMAGE_NAME:latest
