@@ -10,9 +10,6 @@ variables:
 before_script:
   - echo "🚀 Start CI/CD pipeline"
 
-# =====================
-# Build Stage
-# =====================
 build_app:
   stage: build
   image: node:20-alpine
@@ -24,9 +21,6 @@ build_app:
     paths:
       - dist
 
-# =====================
-# Trivy Filesystem Scan
-# =====================
 trivy_fs_scan:
   stage: scan
   image:
@@ -35,27 +29,39 @@ trivy_fs_scan:
   script:
     - trivy fs --exit-code 1 --severity HIGH,CRITICAL .
 
-# =====================
-# Docker Build & Push
-# =====================
 docker_build:
   stage: docker
   image: docker:24.0.5
   services:
     - docker:dind
   script:
-    - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
     - docker build --pull --no-cache -t $IMAGE_NAME:latest .
-    - docker push $IMAGE_NAME:latest
+  artifacts:
+    paths:
+      - docker-image.tar
+    expire_in: 1h
+  after_script:
+    - docker save -o docker-image.tar $IMAGE_NAME:latest
 
-# =====================
-# Trivy Docker Image Scan
-# =====================
 trivy_image_scan:
-  stage: docker
-  needs: ["docker_build"]   # sekarang valid, karena sama-sama di stage docker
+  stage: scan
+  needs: ["docker_build"]
   image:
     name: aquasec/trivy:latest
     entrypoint: [""]
+  services:
+    - docker:dind
   script:
+    - docker load -i docker-image.tar
     - trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_NAME:latest
+
+docker_push:
+  stage: docker
+  needs: ["trivy_image_scan"]
+  image: docker:24.0.5
+  services:
+    - docker:dind
+  script:
+    - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+    - docker load -i docker-image.tar
+    - docker push $IMAGE_NAME:latest
