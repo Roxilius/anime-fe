@@ -1,8 +1,9 @@
 stages:
   - build
   - scan
-  - docker
+  - docker_build
   - image_scan
+  - docker_push
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -31,7 +32,7 @@ trivy_fs_scan:
     - trivy fs --exit-code 1 --severity HIGH,CRITICAL .
 
 docker_build:
-  stage: docker
+  stage: docker_build
   image: docker:24.0.5
   services:
     - docker:dind
@@ -56,7 +57,7 @@ trivy_image_scan:
     - trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_NAME:latest
 
 docker_push:
-  stage: docker
+  stage: docker_push
   needs: ["trivy_image_scan"]
   image: docker:24.0.5
   services:
