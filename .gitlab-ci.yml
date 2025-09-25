@@ -47,14 +47,15 @@ docker_build:
 trivy_image_scan:
   stage: image_scan
   needs: ["docker_build"]
-  image:
-    name: aquasec/trivy:latest
-    entrypoint: [""]
+  image: docker:24.0.5
   services:
     - docker:dind
+  before_script:
+    - apk add --no-cache curl
+    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
   script:
     - docker load -i docker-image.tar
-    - trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_NAME:latest
+    - ./trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_NAME:latest
 
 docker_push:
   stage: docker_push
